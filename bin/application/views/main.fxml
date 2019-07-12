@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="main" maxHeight="1808.0" maxWidth="1920.0" minHeight="768.0" minWidth="1024.0" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TabPane layoutY="25.0" tabClosingPolicy="UNAVAILABLE" tabMinHeight="30.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.rowSpan="2147483647">
+        <tabs>
+          <Tab closable="false" text="Recherche de documents">
+              <content>
+                <fx:include source="document.fxml" />
+              </content>
+            </Tab>
+            <Tab closable="false" text="Abonnés">
+              <content>
+                <fx:include source="utilisateur.fxml" />
+              </content>
+            </Tab>
+            <Tab closable="false" text="Emprunts ">
+              <content>
+                <fx:include source="emprunt.fxml" />
+              </content>
+            </Tab>
+            <Tab closable="false" text="Retour">
+              <content>
+                <fx:include source="retour.fxml" />
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <MenuBar layoutY="2.0" maxWidth="1820.0" prefHeight="25.0" prefWidth="1024.0" GridPane.columnSpan="2147483647" GridPane.valignment="BASELINE">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Close" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Delete" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+   </children>
+   <columnConstraints>
+      <ColumnConstraints percentWidth="8.33" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints percentHeight="8.33" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+      <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
+   </rowConstraints>
+</GridPane>
