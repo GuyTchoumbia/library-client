@@ -12,16 +12,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane hgap="10.0" prefHeight="652.0" prefWidth="1024.0" vgap="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane hgap="10.0" prefHeight="768.0" prefWidth="1024.0" vgap="10.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.views.EmpruntController">
    <children>
       <TableView fx:id="empruntTable" layoutX="40.0" layoutY="265.0" prefHeight="362.0" prefWidth="968.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" GridPane.rowSpan="2147483647">
         <columns>
-          <TableColumn fx:id="titreColumn" prefWidth="250.0" text="Titre" />
-            <TableColumn fx:id="supportColumn" prefWidth="100.0" text="Support" />
+          <TableColumn fx:id="titreColumn" prefWidth="246.0" text="Titre" />
+            <TableColumn fx:id="supportColumn" prefWidth="104.0" text="Support" />
           <TableColumn fx:id="coteColumn" prefWidth="100.0" text="Côte" />
-            <TableColumn fx:id="empruntColumn" prefWidth="150.0" text="Date d'emprunt" />
-            <TableColumn fx:id="retourColumn" prefWidth="150.0" text="Date de retour prévue" />
-            <TableColumn fx:id="remarqueColumn" prefWidth="220.0" text="Remarques" />
+            <TableColumn fx:id="dateEmpruntColumn" prefWidth="150.0" text="Date d'emprunt" />
+            <TableColumn prefWidth="150.0" text="Date de retour prévue" />
         </columns>
          <contextMenu>
             <ContextMenu>
@@ -32,18 +31,20 @@
               </items>
             </ContextMenu>
          </contextMenu>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
-      <Button fx:id="empruntButton" disable="true" layoutX="40.0" layoutY="159.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="185.0" text="Emprunt" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <TextField fx:id="inputCarte" layoutX="143.0" layoutY="113.0" prefHeight="25.0" prefWidth="241.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <Button fx:id="empruntButton" disable="true" layoutX="40.0" layoutY="159.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="185.0" text="Emprunt" GridPane.columnIndex="8" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <TextField fx:id="inputCard" layoutX="143.0" layoutY="113.0" prefHeight="25.0" prefWidth="241.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <Label layoutX="40.0" layoutY="117.0" text="Numero de Carte" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Button fx:id="searchCardButton" layoutX="408.0" layoutY="113.0" mnemonicParsing="false" text="Chercher" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Button fx:id="scanCardButton" layoutX="40.0" layoutY="33.0" mnemonicParsing="false" prefHeight="61.0" prefWidth="432.0" text="Scan Carte" GridPane.columnIndex="1" GridPane.columnSpan="3" />
+      <Button fx:id="searchCardButton" layoutX="408.0" layoutY="113.0" mnemonicParsing="false" text="Chercher" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
    </children>
    <columnConstraints>
       <ColumnConstraints percentWidth="8.33" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
+      <ColumnConstraints minWidth="10.0" percentWidth="8.66" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />

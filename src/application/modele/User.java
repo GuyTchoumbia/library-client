@@ -1,52 +1,47 @@
 package application.modele;
 
+import java.util.List;
+
 import application.common.GenericEntity;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
 
 public class User extends GenericEntity {
 	
-	private StringProperty nom = new SimpleStringProperty();
-	private StringProperty  prenom = new SimpleStringProperty();
-	private ObjectProperty<Adresse> adresse = new SimpleObjectProperty<Adresse>();
-	private StringProperty email = new SimpleStringProperty();
-	private StringProperty telephone = new SimpleStringProperty();
+	private IntegerProperty id = new SimpleIntegerProperty();
+	private ObjectProperty<Civil> civil = new SimpleObjectProperty<Civil>();
+	private ObjectProperty<Contact> contact = new SimpleObjectProperty<Contact>();
+	private ListProperty<UserCote> userCotes = new SimpleListProperty<UserCote>();
 	
-	public User() {
-		this.nom.set("");
-		this.prenom.set("");
-		this.adresse.set(new Adresse());
-		this.telephone.set("");
-		this.email.set("");
+	public User() {		
 	}
 	
-	public User(String nom, String prenom, Adresse adresse, String email, String telephone) {
-		this.nom.set(nom);
-		this.prenom.set(prenom);
-		this.adresse.set(adresse);
-		this.email.set(email);
-		this.telephone.set(telephone);
+	public User(Integer id, Civil civil, Contact contact, List<UserCote> userCotes) {
+		this.id.set(id);
+		this.civil.set(civil);
+		this.contact.set(contact);
+		this.userCotes.set(FXCollections.observableArrayList(userCotes));
 	}
 	
-	public StringProperty nomProperty() { return this.nom; }
-	public StringProperty prenomProperty() { return this.prenom; }
-	public ObjectProperty<Adresse> adresseProperty() { return this.adresse; }
-	public StringProperty emailProperty() { return this.email; }
-	public StringProperty telephoneProperty() { return this.telephone; }
+	public IntegerProperty idProperty() { return this.id; }
+	public ObjectProperty<Civil> civilProperty() { return this.civil; }
+	public ObjectProperty<Contact> contactProperty() { return this.contact; }
+	public ListProperty<UserCote> userCotesProperty() { return this.userCotes; }
 	
-	public String getNom() { return this.nom.get(); }
-	public String getPrenom() { return this.prenom.get(); }
-	public Adresse getAdresse() { return this.adresse.get(); }
-	public String getEmail() { return this.email.get(); }
-	public String getTelephone() { return this.telephone.get(); }
+	public Integer getId() { return this.id.get(); }
+	public Civil getCivil() { return this.civil.get(); }
+	public Contact getContact() { return this.contact.get(); }
+	public List<UserCote> getUserCotes() { return this.userCotes.get(); }
 	
-	public void setNom(String nom) { this.nom.set(nom); }
-	public void setPrenom(String prenom) { this.prenom.set(prenom); }
-	public void setAdresse(Adresse adresse) { this.adresse.set(adresse); }
-	public void setEmail(String email) { this.email.set(email); }
-	public void setTelephone(String telephone) { this.telephone.set(telephone); }
+	public void setId(Integer id) { this.id.set(id); }
+	public void setCivil(Civil civil) { this.civil.set(civil); }
+	public void setContact(Contact contact) { this.contact.set(contact); }
+	public void setUserCotes(List<UserCote> userCotes) { this.userCotes.set(FXCollections.observableArrayList(userCotes)); }
 
 
 }

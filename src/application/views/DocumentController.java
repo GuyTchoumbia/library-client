@@ -2,12 +2,9 @@ package application.views;
 
 import java.util.Optional;
 
-import com.gluonhq.connect.GluonObservableList;
-import com.gluonhq.connect.provider.DataProvider;
-import com.gluonhq.connect.provider.RestClient;
-
 import application.common.ControllerImpl;
 import application.modele.Document;
+import application.modele.Library;
 import application.modele.Support;
 import application.utils.EditDocumentDialog;
 import javafx.fxml.FXML;
@@ -19,50 +16,54 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import services.DocumentService;
 
 public class DocumentController extends ControllerImpl<Document> {
 	
+	DocumentService documentService = new DocumentService();
+	
 	@FXML private TableView<Document> documentTable;
 	@FXML private TableColumn<Document, String> titreColumn;
-	@FXML private TableColumn<Document, Number> idColumn;
-	@FXML private TableColumn<Document, String> dateColumn;
-	@FXML private ComboBox<Support> inputSupport;
+	@FXML private TableColumn<Document, String> isbnColumn;
+	@FXML private TableColumn<Document, String> dateColumn;	
 	@FXML private TableColumn<Document, String> auteurColumn;
 	@FXML private TableColumn<Document, String> editeurColumn;
-	@FXML private TableColumn<Document, String> themeColumn;
-	@FXML private TableColumn<Document, String> bibliothequeColumn;
+	@FXML private TableColumn<Document, String> tagColumn;	
+	@FXML private TableColumn<Document, String> supportColumn;
+	@FXML private TableColumn<Document, String> coteColumn;
+
 	@FXML private ContextMenu context;
 	@FXML private MenuItem modifMenu;
 	@FXML private MenuItem ajouterMenu;
 	@FXML private MenuItem deleteMenu;
-	@FXML private TextField inputId;
+	@FXML private TextField inputIsbn;
 	@FXML private TextField inputDate;
 	@FXML private TextField inputTitre;
 	@FXML private TextField inputAuteur;
 	@FXML private TextField inputEditeur;
-	@FXML private TextField inputTheme;
-	@FXML private TextField inputBibliotheque;	
+	@FXML private TextField inputTag;
+	@FXML private TextField inputCote;
+	@FXML private ComboBox<Support> selectSupport;
+	@FXML private ComboBox<Library> selectLibrary;
 	@FXML private Button searchButton;
 		
 	@FXML
 	private void initialize() {
 		titreColumn.setCellValueFactory(cellData -> cellData.getValue().libelleProperty());
-		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
+		isbnColumn.setCellValueFactory(cellData -> cellData.getValue().isbnProperty());
 		dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());	
 		auteurColumn.setCellValueFactory(cellData -> explode(cellData.getValue().auteursProperty().getValue()));	
 		editeurColumn.setCellValueFactory(cellData -> cellData.getValue().getEditeur().libelleProperty());	
-		themeColumn.setCellValueFactory(cellData -> explode(cellData.getValue().tagsProperty().getValue()));	
-		bibliothequeColumn.setCellValueFactory(cellData -> explode(cellData.getValue().librariesProperty().getValue()));	
+		tagColumn.setCellValueFactory(cellData -> explode(cellData.getValue().tagsProperty().getValue()));	
+		coteColumn.setCellValueFactory(cellData -> explode(cellData.getValue().cotesProperty().getValue()));	
+		supportColumn.setCellValueFactory(cellData -> cellData.getValue().getSupport().libelleProperty());	
+		selectSupport.setItems(documentService.findAllSupports());
+		selectLibrary.setItems(documentService.findAllLibraries());
 		documentTable.setEditable(true);
 		
 		searchButton.setOnAction(e -> {
-			RestClient restClient = RestClient.create()
-			        .method("GET")
-			        .host("http://localhost:8080/library-api/document/all");
-			GluonObservableList<Document> documents = DataProvider.retrieveList(restClient.createListDataReader(Document.class));
-			documentTable.setItems(documents);
+			documentTable.setItems(documentService.search());
 		});
-		
 		
 		context.setOnShowing(e -> {
 			if (documentTable.getSelectionModel().getSelectedItem() == null) {

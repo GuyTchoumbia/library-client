@@ -13,8 +13,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import services.UserService;
 
 public class UtilisateurController extends ControllerImpl<User>{
+	
+	UserService userService = new UserService();
 	
 	@FXML TextField inputNom;
 	@FXML TextField inputPrenom;
@@ -35,13 +38,20 @@ public class UtilisateurController extends ControllerImpl<User>{
 	@FXML
 	private void initialize() {
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
-		nomColumn.setCellValueFactory(cellData -> cellData.getValue().nomProperty());
-		prenomColumn.setCellValueFactory(cellData -> cellData.getValue().prenomProperty());
-		adresseColumn.setCellValueFactory(cellData -> cellData.getValue().getAdresse().toStringProperty()); 
-		emailColumn.setCellValueFactory(cellData -> cellData.getValue().emailProperty());
-		telephoneColumn.setCellValueFactory(cellData -> cellData.getValue().telephoneProperty());
+		nomColumn.setCellValueFactory(cellData -> cellData.getValue().getCivil().nomProperty());
+		prenomColumn.setCellValueFactory(cellData -> cellData.getValue().getCivil().prenomProperty());
+		adresseColumn.setCellValueFactory(cellData -> cellData.getValue().getContact().getAdress().toStringProperty()); 
+		emailColumn.setCellValueFactory(cellData -> cellData.getValue().getContact().emailProperty());
+		telephoneColumn.setCellValueFactory(cellData -> cellData.getValue().getContact().phoneProperty());
 		userTable.setEditable(true);
 		userTable.setItems(list);
+		
+		searchButton.setOnAction(e -> {
+			String nom = inputNom.getText();
+			String prenom = inputPrenom.getText();
+			if (nom != "" && prenom != "")
+			userTable.setItems(userService.findUserByInfo(nom, prenom));
+		});
 		
 		newButton.setOnAction(e -> {
 			EditUserDialog dialog = new EditUserDialog(new User());
@@ -63,7 +73,7 @@ public class UtilisateurController extends ControllerImpl<User>{
 			EditUserDialog dialog = new EditUserDialog(userTable.getSelectionModel().getSelectedItem());
 			Optional<User> result = dialog.showAndWait();
 			result.ifPresent(response -> {
-				//add to database
+				userService.update(result.get());
 				list.set(userTable.getSelectionModel().getSelectedIndex(), result.get());
 			});
 		});		
@@ -72,7 +82,7 @@ public class UtilisateurController extends ControllerImpl<User>{
 			confirm.showAndWait()
 				.filter(response -> response == ButtonType.OK)
 		      	.ifPresent(response -> {
-		      		//remove from database
+		      		userService.delete(userTable.getSelectionModel().getSelectedItem());
 		      		list.remove(userTable.getSelectionModel().getSelectedItem());
 		      	});			
 		});

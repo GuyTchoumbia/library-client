@@ -16,6 +16,7 @@ public class Main extends Application {
 			loader.setLocation(this.getClass().getResource("views/main.fxml"));			
 			GridPane MainContainer = (GridPane) loader.load();
 			Scene MainScene = new Scene(MainContainer);
+			MainScene.getStylesheets().add(Main.class.getResource("resources/bootstrap3.css").toExternalForm());
 		    primaryStage.setScene(MainScene);
 		    primaryStage.show();		
 		} catch(Exception e) {

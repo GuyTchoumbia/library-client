@@ -12,11 +12,11 @@ import javafx.collections.FXCollections;
 public class Library extends GenericEntity {
 	
 	private ListProperty<Cote> cotes = new SimpleListProperty<Cote>();
-	private ObjectProperty<Adresse> adress = new SimpleObjectProperty<Adresse>();
+	private ObjectProperty<Adress> adress = new SimpleObjectProperty<Adress>();
 	
 	public Library() {}
 	
-	public Library(Integer id, String libelle, Adresse adress) {
+	public Library(Integer id, String libelle, Adress adress) {
 		super(id, libelle);
 		this.adress.set(adress);
 	}
@@ -28,8 +28,13 @@ public class Library extends GenericEntity {
 	public void addCote(Cote cote) { this.cotes.add(cote); }
 	public void removeCote(Cote cote) { this.cotes.remove(cote); }
 	
-	public ObjectProperty<Adresse> adressProperty() { return this.adress; }
-	public Adresse getAdress() { return this.adress.get(); }
-	public void setAdress(Adresse adress) { this.adress.set(adress); }
+	public ObjectProperty<Adress> adressProperty() { return this.adress; }
+	public Adress getAdress() { return this.adress.get(); }
+	public void setAdress(Adress adress) { this.adress.set(adress); }
+	
+	@Override
+	public String toString() {
+		return this.libelle.get();
+	}
 		
 }

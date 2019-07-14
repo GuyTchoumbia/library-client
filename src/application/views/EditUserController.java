@@ -36,14 +36,14 @@ public class EditUserController extends ControllerImpl<User>{
 	
 	@FXML
 	private void initialize() {
-		inputNom.textProperty().bindBidirectional(user.nomProperty());
-		inputPrenom.textProperty().bindBidirectional(user.prenomProperty());
-		inputRue.textProperty().bindBidirectional(user.getAdresse().rue());
-		inputNumero.textProperty().bindBidirectional(user.getAdresse().numero());
-		inputCodePostal.textProperty().bindBidirectional(user.getAdresse().codePostal());
-		inputVille.textProperty().bindBidirectional(user.getAdresse().ville());
-		inputEmail.textProperty().bindBidirectional(user.emailProperty());
-		inputTelephone.textProperty().bindBidirectional(user.telephoneProperty());		
+		inputNom.textProperty().bindBidirectional(user.getCivil().nomProperty());
+		inputPrenom.textProperty().bindBidirectional(user.getCivil().prenomProperty());
+		inputRue.textProperty().bindBidirectional(user.getContact().getAdress().rueProperty());
+		inputNumero.textProperty().bindBidirectional(user.getContact().getAdress().numeroProperty());
+		inputCodePostal.textProperty().bindBidirectional(user.getContact().getAdress().codePostalProperty());
+		inputVille.textProperty().bindBidirectional(user.getContact().getAdress().villeProperty());
+		inputEmail.textProperty().bindBidirectional(user.getContact().emailProperty());
+		inputTelephone.textProperty().bindBidirectional(user.getContact().phoneProperty());		
 		
 		//validation front
 		
