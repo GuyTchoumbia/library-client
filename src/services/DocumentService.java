@@ -1,67 +1,89 @@
 package services;
 
-import com.gluonhq.connect.GluonObservableList;
-import com.gluonhq.connect.GluonObservableObject;
-import com.gluonhq.connect.provider.DataProvider;
-import com.gluonhq.connect.provider.RestClient;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
+import application.modele.Auteur;
 import application.modele.Document;
+import application.modele.Editeur;
 import application.modele.Library;
 import application.modele.Support;
-import javafx.collections.ObservableList;
+import application.modele.Tag;
+import reactor.core.publisher.Mono;
 
-public class DocumentService {	
+@Component
+public class DocumentService extends AbstractService<Document> {
 	
-	private String url = "http://localhost:8080/library-api";
+	public DocumentService() {		
+		this.entityClass = Document.class;
+	}
 
-	public ObservableList<Document> search() {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-				.path("/document/all");
-		GluonObservableList<Document> documents = DataProvider.retrieveList(restClient.createListDataReader(Document.class));
-		return documents;
+	public Mono<Support[]> findAllSupports() {
+		Mono<Support[]> request = client
+			.get()
+			.uri("/support/all")
+			.accept(MediaType.APPLICATION_JSON)	
+			.retrieve()
+			.bodyToMono(Support[].class);				
+		return request;
 	}
 	
-	public void delete(Document document) {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-		        .path("/document/id/")
-		        .path(document.getId().toString());
-		GluonObservableObject<Document> gdocument = DataProvider.retrieveObject(restClient.createObjectDataReader(Document.class));	
-		restClient = RestClient.create()
-		        .method("POST")
-		        .host(url)
-		        .path("/document/delete");				
-		DataProvider.removeObject(gdocument, restClient.createObjectDataRemover(Document.class));		
-	}
-	
-	public void update(Document document) {
-		RestClient restClient = RestClient.create()
-		        .method("POST")
-		        .host(url)
-		        .path("/document/update");				
-		DataProvider.storeObject(document, restClient.createObjectDataWriter(Document.class));		
+	public Mono<Library[]> findAllLibraries() {
+		Mono<Library[]> request = client
+			.get()
+			.uri("/support/all")
+			.accept(MediaType.APPLICATION_JSON)	
+			.retrieve()
+			.bodyToMono(Library[].class);				
+		return request;
 	}	
-	
-	public ObservableList<Library> findAllLibraries() {
-		RestClient libraryClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-				.path("/library/all");
-		GluonObservableList<Library> libraries = DataProvider.retrieveList(libraryClient.createListDataReader(Library.class));
-		return libraries;
+
+	public Mono<Document[]> autoCompleteLibelle(String text) {
+		Mono<Document[]> request = client
+			.get()
+			.uri("/document/autocomplete")
+			.accept(MediaType.APPLICATION_JSON)	
+			.retrieve()
+			.bodyToMono(Document[].class);				
+		return request;
+	}
+
+	public Mono<Editeur[]> autoCompleteEditeur(String text) {
+		Mono<Editeur[]> request = client
+			.get()
+			.uri("/document/autocomplete")
+			.accept(MediaType.APPLICATION_JSON)	
+			.retrieve()
+			.bodyToMono(Editeur[].class);				
+		return request;
+	}
+
+	public Mono<Auteur[]> autoCompleteAuteur(String text) {
+		Mono<Auteur[]> request = client
+			.get()
+			.uri("/document/autocomplete")
+			.accept(MediaType.APPLICATION_JSON)	
+			.retrieve()
+			.bodyToMono(Auteur[].class);				
+		return request;
+	}
+
+	public Mono<Tag[]> autoCompleteTag(String text) {
+		Mono<Tag[]> request = client
+			.get()
+			.uri("/document/autocomplete")
+			.accept(MediaType.APPLICATION_JSON)	
+			.retrieve()
+			.bodyToMono(Tag[].class);				
+		return request;
 	}
 	
-	public ObservableList<Support> findAllSupports() {
-		RestClient supportClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-				.path("/support/all");
-		GluonObservableList<Support> supports = DataProvider.retrieveList(supportClient.createListDataReader(Support.class));
-		return supports;
-	}
+
+	public Document search(String text, String text2, String text3, String text4, String text5, Integer id,
+			Integer id2) {
+		// TODO Auto-generated method stub
+		return null;
+	}	
 	
 	
 	

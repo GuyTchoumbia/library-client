@@ -27,7 +27,7 @@ public class Contact {
 	
 	public Adress getAdress() { return this.adress.get(); }
 	public String getPhone() { return this.phone.get(); }
-	public String email() { return this.email.get(); }
+	public String getEmail() { return this.email.get(); }
 	
 	public void setAdress(Adress adress) { this.adress.set(adress); }
 	public void setPhone(String phone) { this.phone.set(phone); }

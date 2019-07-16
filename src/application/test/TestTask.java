@@ -5,12 +5,6 @@ import java.util.concurrent.Executors;
 
 import org.junit.jupiter.api.Test;
 
-import com.gluonhq.connect.GluonObservableObject;
-import com.gluonhq.connect.provider.DataProvider;
-import com.gluonhq.connect.provider.RestClient;
-
-import application.modele.Document;
-
 public class TestTask {
 	
 	ExecutorService executor = Executors.newCachedThreadPool();
@@ -26,15 +20,4 @@ public class TestTask {
 		assert json != null;
 	}	
 	
-	@Test
-	void testDataFx() {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(urlTestJson);
-		GluonObservableObject<Document> document = DataProvider.retrieveObject(restClient.createObjectDataReader(Document.class));
-		System.out.println(document);
-		assert document != null;		        
-
-	}
-
 }

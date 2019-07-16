@@ -4,10 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
-
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,21 +43,7 @@ public class TestJackson {
 		assert deserialTest.getNom().equals("Jack");
 		assert !deserialTest.getBonbons().isEmpty();
 		
-	}
+	}	
 	
-	@Test
-	void testOnAppClass() {
-		
-		Client client = ClientBuilder.newClient();
-		String response = client.target(urlTestJson).request(MediaType.APPLICATION_JSON).get(String.class);
-		try {
-			document = om.readValue(response, Document.class);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println(document);
-		assert document != null;
-	}
 
 }

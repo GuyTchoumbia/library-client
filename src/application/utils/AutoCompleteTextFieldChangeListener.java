@@ -18,7 +18,7 @@ public class AutoCompleteTextFieldChangeListener<T extends Entity> implements Ch
 		
 	@Override
 	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-		if (!newValue.equals("")) {
+		if (!newValue.equals("") && newValue.length() > 3) {
 			try {
 				field.setSource(source);
 			} catch (Exception e) {				

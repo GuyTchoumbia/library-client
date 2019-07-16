@@ -1,75 +1,68 @@
 package services;
 
-import java.util.List;
 
-import com.gluonhq.connect.GluonObservableList;
-import com.gluonhq.connect.GluonObservableObject;
-import com.gluonhq.connect.provider.DataProvider;
-import com.gluonhq.connect.provider.RestClient;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import application.modele.User;
-import javafx.beans.property.ObjectProperty;
-import javafx.collections.ObservableList;
+import reactor.core.publisher.Mono;
 
-public class UserService {
+@Component
+public class UserService extends AbstractService<User>{	
 	
-	private String url = "http://localhost:8080/library-api/user";
-
-	public ObservableList<User> search(String libelle, String auteur, String editeur, String isbn, String cote, String support, String library) {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-				.path("/search")
-				.queryParam("document", libelle)
-				.queryParam("auteur", libelle)
-				.queryParam("editeur", editeur)
-				.queryParam("isbn", isbn)
-				.queryParam("cote", cote)
-				.queryParam("support", support)
-				.queryParam("library", library);
-		GluonObservableList<User> users = DataProvider.retrieveList(restClient.createListDataReader(User.class));
-		return users;
+	public UserService() {
+		this.url = "http://localhost:8080/library-api/user";
+		this.entityClass = User.class;
+		this.client =  WebClient.builder().baseUrl(url).filter(logRequest()).build();
+	}	
+	
+	public Mono<User[]> findUserByInfo(String id, String nom) {		
+		Mono<User[]> result = client
+			.get()
+			.uri(uriBuilder -> uriBuilder
+					.path("/info")
+					.queryParam("id", id)
+					.queryParam("nom", nom)					
+					.build()
+					)
+			.accept(MediaType.APPLICATION_JSON)			
+			.retrieve()
+			.bodyToMono(User[].class);
+		return result;
 	}
 	
-	public ObservableList<User> findUserByInfo(String nom, String prenom) {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-				.path("/info")
-				.queryParam("nom", nom)
-				.queryParam("prenom", prenom);
-		GluonObservableList<User> users = DataProvider.retrieveList(restClient.createListDataReader(User.class));
-		return users;
+	
+	public Mono<String> delete(User user) {				
+		Mono<String> result = client
+				.post()
+				.uri("/id")						
+				.accept(MediaType.APPLICATION_JSON)	
+				.syncBody(user)
+				.exchange()
+				.flatMap(response -> response.bodyToMono(String.class));
+			return result;
 	}
 	
-	public void delete(User user) {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-		        .path("id/"+user.getId());				
-		GluonObservableObject<User> guser = DataProvider.retrieveObject(restClient.createObjectDataReader(User.class));	
-		restClient = RestClient.create()
-		        .method("POST")
-		        .host(url)
-		        .path("delete");				
-		DataProvider.removeObject(guser, restClient.createObjectDataRemover(User.class));		
-	}
-	
-	public void update(User user) {
-		RestClient restClient = RestClient.create()
-		        .method("POST")
-		        .host(url)
-		        .path("update");				
-		DataProvider.storeObject(user, restClient.createObjectDataWriter(User.class));		
+	public Mono<User> update(User user) {		
+		Mono<User> entity = client
+		        .post()
+		        .uri("/update")		        
+		        .accept(MediaType.APPLICATION_JSON)
+		        .syncBody(user)
+		        .exchange()
+		        .flatMap(response -> response.bodyToMono(User.class));
+		return entity;
 	}
 
-	public GluonObservableObject<User> findUserById(String id) {
-		RestClient restClient = RestClient.create()
-		        .method("GET")
-		        .host(url)
-				.path("/id/1");							
-		GluonObservableObject<User> user = DataProvider.retrieveObject(restClient.createObjectDataReader(User.class));
-		return user;		
+	public Mono<User> findById(String id) {
+		Mono<User> entity = client
+				.get()
+				.uri("/id/{id}", id)
+				.accept(MediaType.APPLICATION_JSON)
+				.retrieve()
+				.bodyToMono(User.class);
+			return entity;
 	}
 
 }

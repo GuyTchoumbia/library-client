@@ -15,7 +15,7 @@ import javafx.stage.StageStyle;
 
 public class EditDocumentDialog extends Dialog<Document> {		
 	
-	private EditDocumentController controller;
+	private EditDocumentController controller;	
 	
 	public EditDocumentDialog(Document document) {
 		this.initStyle(StageStyle.UTILITY);
@@ -45,18 +45,17 @@ public class EditDocumentDialog extends Dialog<Document> {
 		});
 		
 		final Button validate = (Button) this.getDialogPane().lookupButton(valider);
-		validate.addEventFilter(ActionEvent.ACTION, event -> {
-			System.out.println(getController().validate());
+		validate.addEventFilter(ActionEvent.ACTION, event -> {			
 			if (!getController().validate()) {
 				event.consume();
 				Alert alert = new Alert(AlertType.WARNING, "Champs Incorrects");
+				alert.setContentText(getController().getErrorMessage());
 				alert.showAndWait();
 			}
 		});
 		
 	}
-	
-	
+		
 	public EditDocumentController getController() {
 		return this.controller;
 	}

@@ -1,12 +1,12 @@
 package application.views;
 
-import java.util.Date;
+import java.time.LocalDate;
 
-import com.gluonhq.connect.GluonObservableObject;
+import org.springframework.stereotype.Component;
 
 import application.common.ControllerImpl;
-import application.modele.User;
 import application.modele.UserCote;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
@@ -14,15 +14,16 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import services.UserService;
 
+@Component
 public class EmpruntController extends ControllerImpl<UserCote> {
 	
-	UserService userService = new UserService();
+	private UserService userService = new UserService();		
 	
 	@FXML private TableView<UserCote> empruntTable;
 	@FXML private TableColumn<UserCote, String> titreColumn;
 	@FXML private TableColumn<UserCote, String> supportColumn;
 	@FXML private TableColumn<UserCote, String> coteColumn;
-	@FXML private TableColumn<UserCote, Date> dateEmpruntColumn;
+	@FXML private TableColumn<UserCote, LocalDate> dateEmpruntColumn;
 	@FXML private Button searchCardButton;
 	@FXML private Button empruntButton;
 	@FXML private TextField inputCard;
@@ -36,20 +37,13 @@ public class EmpruntController extends ControllerImpl<UserCote> {
 		
 		searchCardButton.setOnAction(e -> {
 			String id = inputCard.getText();
-			System.out.println(id);
-			if (!id.equals("")) {
-				GluonObservableObject<User> user = userService.findUserById(id);
-				user.addListener((obs, ov, nv) -> {
-				    if (nv != null && user.get() != null) {
-				        empruntTable.setItems(nv.userCotesProperty());
-				    }
-				});
+			if (!id.equals("")) {			
+				userService.findById(id).subscribe(requestResponse -> empruntTable.setItems(FXCollections.observableArrayList(requestResponse.getUserCotes())));
 			}
-		});
-		
+		});		
 		empruntButton.setOnAction(e-> {
-			//popup?
+			// TODO une popup demandant la cote du document a emprunter
 		});
-	}
+	}		
 
 }

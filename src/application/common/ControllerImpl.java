@@ -1,12 +1,7 @@
 package application.common;
 
-import java.sql.Connection;
-import java.util.Optional;
+import org.springframework.stereotype.Component;
 
-import application.modele.Document;
-import application.modele.User;
-import application.utils.EditDocumentDialog;
-import application.utils.EditUserDialog;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,20 +11,20 @@ import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-
-public class ControllerImpl<T extends Entity> implements Controller<T>{	
-	
-	
-	protected Connection cnx;
+@Component
+public class ControllerImpl<T extends Entity> implements Controller<T> {	
 	
 	protected ObservableList<T> list;
+	protected Alert confirmAlert;
+	protected Alert emptyAlert;
+	protected Alert errorAlert;
 	
-	protected Alert confirm;
-	protected Alert empty;
-	
-	public ControllerImpl() {		
+	public ControllerImpl() {			
+		confirmAlert = new Alert(AlertType.CONFIRMATION);
+		confirmAlert.setContentText("Etes-vous sur?");
+		emptyAlert = new Alert(AlertType.WARNING);
+		errorAlert = new Alert(AlertType.ERROR);
 		list = FXCollections.observableArrayList();
-		confirm = new Alert(AlertType.CONFIRMATION);
 	}		
 	
 	/*
@@ -54,34 +49,24 @@ public class ControllerImpl<T extends Entity> implements Controller<T>{
 		return new SimpleStringProperty(s);
 	}
 	
-	/*
-	 * new window for editing 
-	 */
-		
-	public void editDocumentMenu(Document document) {
-		EditDocumentDialog dialog = new EditDocumentDialog(document);
-		Optional<Document> result = dialog.showAndWait();
-		result.orElse(null);		
-	}
-	
-	public User editUserMenu(User user) {
-		EditUserDialog dialog =  new EditUserDialog(user);
-		return dialog.getResult();
-	}
-
 	@Override
 	public void add(TextField input) {
-		confirm.showAndWait();
+		confirmAlert.showAndWait();
 	}
 	
 	@Override
 	public void remove(TableView<T> table) {
-		confirm.showAndWait();
+		confirmAlert.showAndWait();
 	}
 
 	@Override
 	public void edit(CellEditEvent<T, String> e) {
-		confirm.showAndWait();		
+		confirmAlert.showAndWait();		
 	}	
+	
+	public void popError(String message) {
+		errorAlert.setContentText(message);
+		errorAlert.showAndWait();
+	}
 	
 }

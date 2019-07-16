@@ -1,7 +1,9 @@
 package application.modele;
 
-import java.sql.Date;
+import java.util.Date;
+import java.time.LocalDate;
 
+import application.utils.DateUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,7 +13,7 @@ public class Civil {
 	
 	private StringProperty nom = new SimpleStringProperty();
 	private StringProperty prenom = new SimpleStringProperty();
-	private ObjectProperty<Date> dateNaissance = new SimpleObjectProperty<>();
+	private ObjectProperty<LocalDate> dateNaissance = new SimpleObjectProperty<>();
 	
 	public Civil() {
 		
@@ -20,7 +22,7 @@ public class Civil {
 	public Civil(String nom, String prenom, Date dateNaissance) {
 		this.nom.set(nom);
 		this.prenom.set(prenom);
-		this.dateNaissance.set(dateNaissance);
+		this.dateNaissance.set(DateUtils.asLocalDate(dateNaissance));
 	}
 	
 	public final StringProperty nomProperty() {
@@ -47,16 +49,16 @@ public class Civil {
 		this.prenomProperty().set(prenom);
 	}
 	
-	public final ObjectProperty<Date> dateNaissanceProperty() {
+	public final ObjectProperty<LocalDate> dateNaissanceProperty() {
 		return this.dateNaissance;
 	}
 	
 	public final Date getDateNaissance() {
-		return this.dateNaissanceProperty().get();
+		return DateUtils.asDate(this.dateNaissanceProperty().get());
 	}
 	
 	public final void setDateNaissance(final Date date) {
-		this.dateNaissanceProperty().set(date);
+		this.dateNaissanceProperty().set(DateUtils.asLocalDate(date));
 	}
 	
 	

@@ -36,25 +36,25 @@ public class EditUserDialog extends Dialog<User> {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-		}
+		}		
 		
 		final Button validate = (Button) this.getDialogPane().lookupButton(valider);
 		validate.addEventFilter(ActionEvent.ACTION, event -> {
-			System.out.println(getController().validate());
 			if (!getController().validate()) {
 				event.consume();
 				Alert alert = new Alert(AlertType.WARNING, "Champs Incorrects");
+				alert.setContentText(getController().getErrorMessage());
 				alert.showAndWait();
 			}
 		});
 				
 		this.setResultConverter(button -> {
-			if (button == valider) {
+			if (button == valider) {				
 				return user;
 			}
 			else return null;		
 		});		
-	}
+	}	
 	
 	public EditUserController getController() {
 		return this.controller;

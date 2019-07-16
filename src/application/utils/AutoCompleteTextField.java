@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 
 /*
  * champ de texte avec auto completion fait-main: 
- * 	un champ classique auquel on ajoute un menu contextuel qui apparait/disparait selon la présence ou non d'objet dans la liste "source"
+ * 	un champ classique auquel on ajoute un menu contextuel qui apparait/disparait selon la prï¿½sence ou non d'objet dans la liste "source"
  * on ajoute un ClickEvent a chaque objet de la liste pour remplacer le texte du champ par le texte de l'objet.
  */
 public class AutoCompleteTextField<T> extends TextField {

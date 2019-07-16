@@ -1,12 +1,20 @@
 package application.views;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import application.common.ControllerImpl;
+import application.modele.Auteur;
+import application.modele.Cote;
 import application.modele.Document;
+import application.modele.Editeur;
 import application.modele.Library;
 import application.modele.Support;
+import application.modele.Tag;
 import application.utils.EditDocumentDialog;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -18,14 +26,20 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import services.DocumentService;
 
+@Component
 public class DocumentController extends ControllerImpl<Document> {
 	
-	DocumentService documentService = new DocumentService();
+	private DocumentService documentService;
+	
+	public DocumentController() {
+		super();
+		documentService = new DocumentService();
+	}
 	
 	@FXML private TableView<Document> documentTable;
 	@FXML private TableColumn<Document, String> titreColumn;
 	@FXML private TableColumn<Document, String> isbnColumn;
-	@FXML private TableColumn<Document, String> dateColumn;	
+	@FXML private TableColumn<Document, Number> dateColumn;	
 	@FXML private TableColumn<Document, String> auteurColumn;
 	@FXML private TableColumn<Document, String> editeurColumn;
 	@FXML private TableColumn<Document, String> tagColumn;	
@@ -56,13 +70,25 @@ public class DocumentController extends ControllerImpl<Document> {
 		editeurColumn.setCellValueFactory(cellData -> cellData.getValue().getEditeur().libelleProperty());	
 		tagColumn.setCellValueFactory(cellData -> explode(cellData.getValue().tagsProperty().getValue()));	
 		coteColumn.setCellValueFactory(cellData -> explode(cellData.getValue().cotesProperty().getValue()));	
-		supportColumn.setCellValueFactory(cellData -> cellData.getValue().getSupport().libelleProperty());	
-		selectSupport.setItems(documentService.findAllSupports());
-		selectLibrary.setItems(documentService.findAllLibraries());
+		supportColumn.setCellValueFactory(cellData -> cellData.getValue().getSupport().libelleProperty());
+		selectSupport.setItems(FXCollections.emptyObservableList());
+		selectLibrary.setItems(FXCollections.emptyObservableList());
+		documentService.findAllSupports().subscribe(
+				data -> selectSupport.setItems(FXCollections.observableArrayList(data)),
+				error -> popError(error.getMessage()),
+				() -> System.out.println("Successfull"));
+		documentService.findAllLibraries().subscribe(
+				data -> selectLibrary.setItems(FXCollections.observableArrayList(data)),
+				error -> popError(error.getMessage()),
+				() -> System.out.println("Successfull"));
 		documentTable.setEditable(true);
+		documentTable.setItems(list);
 		
 		searchButton.setOnAction(e -> {
-			documentTable.setItems(documentService.search());
+			list.setAll(documentService.search(
+					inputTitre.getText(), inputAuteur.getText(), inputEditeur.getText(), inputIsbn.getText(), inputCote.getText(),
+					selectSupport.getSelectionModel().getSelectedItem().getId(),
+					selectLibrary.getSelectionModel().getSelectedItem().getId()));
 		});
 		
 		context.setOnShowing(e -> {
@@ -79,24 +105,23 @@ public class DocumentController extends ControllerImpl<Document> {
 		modifMenu.setOnAction(e -> {
 			EditDocumentDialog dialog = new EditDocumentDialog(documentTable.getSelectionModel().getSelectedItem());
 			Optional<Document> result = dialog.showAndWait();
-			result.ifPresent(response -> {
-				//here, insert into database
-				list.set(documentTable.getSelectionModel().getSelectedIndex(), result.get());	
-			});
+			result.ifPresent(response -> 
+				documentService.update(response).subscribe(request -> 
+				list.set(documentTable.getSelectionModel().getSelectedIndex(), request)));
 		});
 		ajouterMenu.setOnAction(e -> {
-			EditDocumentDialog dialog = new EditDocumentDialog(new Document());
+			EditDocumentDialog dialog = new EditDocumentDialog(
+					new Document(0, "", "", 0, new Editeur(), new Support(), new ArrayList<Auteur>(), new ArrayList<Tag>(), new ArrayList<Cote>()));
 			Optional<Document> result = dialog.showAndWait();			
-			result.ifPresent(response -> {
-				//here, insert into database by service
-				list.add(result.get());
-			});
+			result.ifPresent(response -> 
+				documentService.update(response).subscribe(request -> 
+					list.add(request)));						
 		});
 		deleteMenu.setOnAction(e -> {
-			confirm.showAndWait()
+			confirmAlert.showAndWait()
 				.filter(response -> response == ButtonType.OK)
 		      	.ifPresent(response -> {
-		      		//remove from database
+		      		documentService.delete(documentTable.getSelectionModel().getSelectedItem());
 		      		list.remove(documentTable.getSelectionModel().getSelectedItem());
 		      	});			
 		});						
