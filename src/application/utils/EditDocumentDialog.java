@@ -29,8 +29,8 @@ public class EditDocumentDialog extends Dialog<Document> {
 		try {
 			FXMLLoader loader = new FXMLLoader();		
 			loader.setLocation(getClass().getResource("../views/editDocument.fxml"));
-			loader.setController(new EditDocumentController(document));
-			this.setController(loader.getController()); 
+			this.setController(loader.getController());		
+			this.getController().setDocument(document);
 			GridPane editContainer = (GridPane) loader.load();
 			this.getDialogPane().setContent(editContainer);						
 		}

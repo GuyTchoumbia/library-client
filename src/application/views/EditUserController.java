@@ -1,22 +1,32 @@
 package application.views;
 
+import java.time.LocalDate;
+
+import org.springframework.stereotype.Controller;
+
 import application.common.ControllerImpl;
 import application.modele.User;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-
+@Controller
 public class EditUserController extends ControllerImpl<User>{
 	
 	private User user;
 	private boolean valid;
 	private String errorMessage;
 	
-	public EditUserController(User user) {
-		super();
-		this.user = user;
+//	public EditUserController(User user) {
+//		super();
+//		this.user = user;
+//		this.valid = false;
+//		this.errorMessage = "";
+//	}
+	
+	public EditUserController() {
 		this.valid = false;
 		this.errorMessage = "";
 	}	
@@ -40,7 +50,8 @@ public class EditUserController extends ControllerImpl<User>{
 	@FXML Label erreurTelephone;
 	
 	@FXML
-	private void initialize() {	
+	protected void initialize() {	
+		super.initialize();
 		inputNom.textProperty().bindBidirectional(user.getCivil().nomProperty());
 		inputPrenom.textProperty().bindBidirectional(user.getCivil().prenomProperty());
 		inputRue.textProperty().bindBidirectional(user.getContact().getAdress().rueProperty());
@@ -49,12 +60,12 @@ public class EditUserController extends ControllerImpl<User>{
 		inputVille.textProperty().bindBidirectional(user.getContact().getAdress().villeProperty());
 		inputEmail.textProperty().bindBidirectional(user.getContact().emailProperty());
 		inputTelephone.textProperty().bindBidirectional(user.getContact().phoneProperty());	
-		inputDate.valueProperty().bindBidirectional(user.getCivil().dateNaissanceProperty());
+		inputDate.valueProperty().bindBidirectional(new SimpleObjectProperty<LocalDate>(user.getCivil().getDateNaissance().toLocalDate()));
 		//validation front
 		
 		inputNom.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputNom.getText().matches("^.++$")) {
+				if (inputNom.getText().equals("") || !inputNom.getText().matches("^.++$")) {
 					erreurNom.setText("nom incorrect");
 				}
 				else erreurNom.setText("");
@@ -62,7 +73,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});		
 		inputPrenom.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputPrenom.getText().matches("^.++$")) {
+				if (inputPrenom.getText().equals("") || !inputPrenom.getText().matches("^.++$")) {
 					erreurPrenom.setText("prenom incorrect");
 				}
 				else erreurPrenom.setText("");
@@ -70,7 +81,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});
 		inputNumero.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputNumero.getText().matches("^\\d++$")) {
+				if (inputNumero.getText().equals("") || !inputNumero.getText().matches("^\\d++$")) {
 					erreurNumero.setText("numero de rue incorrect");
 				}
 				else erreurNumero.setText("");
@@ -78,7 +89,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});
 		inputRue.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputRue.getText().matches("^.++$")) {
+				if (inputRue.getText().equals("") || !inputRue.getText().matches("^.++$")) {
 					erreurRue.setText("rue incorrecte");
 				}
 				else erreurRue.setText("");
@@ -86,7 +97,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});
 		inputCodePostal.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputCodePostal.getText().matches("^\\d{5}$")) {
+				if (inputCodePostal.getText().equals("") || !inputCodePostal.getText().matches("^\\d{5}$")) {
 					erreurCodePostal.setText("code postal incorrect");
 				}
 				else erreurCodePostal.setText("");
@@ -94,7 +105,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});
 		inputVille.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputVille.getText().matches("^.++$")) {
+				if (inputVille.getText().equals("") || !inputVille.getText().matches("^.++$")) {
 					erreurVille.setText("ville incorrecte");
 				}
 				else erreurVille.setText("");
@@ -102,7 +113,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});
 		inputEmail.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputEmail.getText().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
+				if (inputEmail.getText().equals("") || !inputEmail.getText().matches("^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$")) {
 					erreurEmail.setText("email incorrect");
 				}
 				else erreurEmail.setText("");
@@ -110,7 +121,7 @@ public class EditUserController extends ControllerImpl<User>{
 		});
 		inputTelephone.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputTelephone.getText().matches("^\\d{10}$")) {
+				if (inputTelephone.getText().equals("") || !inputTelephone.getText().matches("^\\d{10}$")) {
 					erreurTelephone.setText("numero de telephone incorrect");
 				}
 				else erreurTelephone.setText("");

@@ -29,8 +29,8 @@ public class EditUserDialog extends Dialog<User> {
 		try {
 			FXMLLoader loader = new FXMLLoader();		
 			loader.setLocation(getClass().getResource("../views/editUser.fxml"));
-			loader.setController(new EditUserController(user));
 			this.setController(loader.getController());
+			this.getController().setUser(user);
 			GridPane editContainer = (GridPane) loader.load();
 			this.getDialogPane().setContent(editContainer);						
 		}

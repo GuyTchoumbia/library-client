@@ -1,8 +1,10 @@
 package application.views;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Optional;
+
+import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
 import application.modele.Adress;
@@ -10,7 +12,9 @@ import application.modele.Civil;
 import application.modele.Contact;
 import application.modele.User;
 import application.modele.UserCote;
+import application.services.UserService;
 import application.utils.EditUserDialog;
+import application.utils.LoggerUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -19,15 +23,14 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import services.UserService;
 
+@Controller
 public class UserController extends ControllerImpl<User>{
 	
 	UserService userService;
 	
-	public UserController() {
-		super();
-		this.userService = new UserService();
+	public UserController(UserService userService) {
+		this.userService = userService;
 	}
 	
 	@FXML TextField inputId;
@@ -36,7 +39,7 @@ public class UserController extends ControllerImpl<User>{
 	@FXML TableColumn<User, Number> idColumn;
 	@FXML TableColumn<User, String> nomColumn;
 	@FXML TableColumn<User, String> prenomColumn;
-	@FXML TableColumn<User, LocalDate> dateNaissanceColumn;
+	@FXML TableColumn<User, Date> dateNaissanceColumn;
 	@FXML TableColumn<User, String> adresseColumn;
 	@FXML TableColumn<User, String> emailColumn;
 	@FXML TableColumn<User, String> telephoneColumn;	
@@ -48,7 +51,8 @@ public class UserController extends ControllerImpl<User>{
 	@FXML MenuItem deleteMenu;
 	
 	@FXML
-	private void initialize() {
+	protected void initialize() {
+		super.initialize();
 		idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty());
 		nomColumn.setCellValueFactory(cellData -> cellData.getValue().getCivil().nomProperty());
 		prenomColumn.setCellValueFactory(cellData -> cellData.getValue().getCivil().prenomProperty());
@@ -63,12 +67,13 @@ public class UserController extends ControllerImpl<User>{
 			String id = inputId.getText();
 			String nom = inputNom.getText();
 			if (!nom.equals("") || !id.equals("")) {
-				userService.findUserByInfo(id, nom)
+				userService
+					.findUserByInfo(id, nom)
 					.subscribe(
 						data -> list.setAll(data),							
-						requestError -> popError(requestError.getMessage()),							
-						() -> System.out.println("Successfull")//						
-						);					
+						requestError -> LoggerUtils.log.warning(requestError.getMessage()),							
+						() -> LoggerUtils.log.info("Successfull")//						
+					);					
 			}
 		});		
 		
@@ -76,11 +81,11 @@ public class UserController extends ControllerImpl<User>{
 			Optional<User> result = getNewUserDialog();
 			result.ifPresent(response -> {
 				userService
-					.update(result.get())
+					.update(response)
 					.subscribe(
 						requestResponse -> list.add(requestResponse),							
-						requestError -> popError(requestError.getMessage()),							
-						() -> System.out.println("Successfull")						
+						requestError -> LoggerUtils.log.warning(requestError.getMessage()),							
+						() -> LoggerUtils.log.info("Successfull")						
 						);					
 			});
 		});
@@ -88,11 +93,11 @@ public class UserController extends ControllerImpl<User>{
 			Optional<User> result = getNewUserDialog();
 			result.ifPresent(response -> {
 				userService
-					.update(result.get())
+					.update(response)
 					.subscribe(
 						requestResponse -> list.add(requestResponse),					
-						requestError -> popError(requestError.getMessage()),							
-						() -> System.out.println("Successfull")						
+						requestError -> LoggerUtils.log.warning(requestError.getMessage()),							
+						() -> LoggerUtils.log.info("Successfull")						
 						);		
 			});
 		});
@@ -104,8 +109,8 @@ public class UserController extends ControllerImpl<User>{
 					.update(response)
 					.subscribe(
 						requestResponse -> list.set(userTable.getSelectionModel().getSelectedIndex(), requestResponse),			
-						requestError -> popError(requestError.getMessage()),							
-						() -> System.out.println("Successfull")						
+						requestError -> LoggerUtils.log.warning(requestError.getMessage()),							
+						() -> LoggerUtils.log.info("Successfull")						
 						);						
 			});
 		});		
@@ -118,8 +123,8 @@ public class UserController extends ControllerImpl<User>{
 		      			.delete(userTable.getSelectionModel().getSelectedItem())		      			
 		      			.subscribe(
 		      				requestResponse -> System.out.println(requestResponse),		      	
-							requestError -> popError(requestError.getMessage()),							
-							() -> list.remove(userTable.getSelectionModel().getSelectedItem())							
+							requestError -> LoggerUtils.log.warning(requestError.getMessage()),							
+							() -> LoggerUtils.log.info("Successful")							
 							);		
 		      	});			
 		});

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane prefHeight="575.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefHeight="575.0" prefWidth="592.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.views.EditUserController">
    <children>
       <TextField fx:id="inputNom" layoutX="123.0" layoutY="82.0" GridPane.columnIndex="6" GridPane.columnSpan="4" GridPane.rowIndex="3" />
       <TextField fx:id="inputPrenom" layoutX="123.0" layoutY="127.0" GridPane.columnIndex="6" GridPane.columnSpan="4" GridPane.rowIndex="4" />

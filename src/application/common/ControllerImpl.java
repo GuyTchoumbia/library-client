@@ -1,17 +1,16 @@
 package application.common;
 
-import org.springframework.stereotype.Component;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-@Component
+
 public class ControllerImpl<T extends Entity> implements Controller<T> {	
 	
 	protected ObservableList<T> list;
@@ -20,10 +19,6 @@ public class ControllerImpl<T extends Entity> implements Controller<T> {
 	protected Alert errorAlert;
 	
 	public ControllerImpl() {			
-		confirmAlert = new Alert(AlertType.CONFIRMATION);
-		confirmAlert.setContentText("Etes-vous sur?");
-		emptyAlert = new Alert(AlertType.WARNING);
-		errorAlert = new Alert(AlertType.ERROR);
 		list = FXCollections.observableArrayList();
 	}		
 	
@@ -67,6 +62,14 @@ public class ControllerImpl<T extends Entity> implements Controller<T> {
 	public void popError(String message) {
 		errorAlert.setContentText(message);
 		errorAlert.showAndWait();
+	}
+	
+	@FXML
+	protected void initialize() {
+//		confirmAlert = new Alert(AlertType.CONFIRMATION);
+//		confirmAlert.setContentText("Etes-vous sur?");
+//		emptyAlert = new Alert(AlertType.WARNING);
+//		errorAlert = new Alert(AlertType.ERROR);		
 	}
 	
 }

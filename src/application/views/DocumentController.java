@@ -3,7 +3,7 @@ package application.views;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
 import application.modele.Auteur;
@@ -13,7 +13,9 @@ import application.modele.Editeur;
 import application.modele.Library;
 import application.modele.Support;
 import application.modele.Tag;
+import application.services.DocumentService;
 import application.utils.EditDocumentDialog;
+import application.utils.LoggerUtils;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,16 +26,16 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import services.DocumentService;
 
-@Component
+
+@Controller
 public class DocumentController extends ControllerImpl<Document> {
 	
 	private DocumentService documentService;
 	
-	public DocumentController() {
+	public DocumentController(DocumentService documentService) {
 		super();
-		documentService = new DocumentService();
+		this.documentService = documentService;
 	}
 	
 	@FXML private TableView<Document> documentTable;
@@ -62,7 +64,8 @@ public class DocumentController extends ControllerImpl<Document> {
 	@FXML private Button searchButton;
 		
 	@FXML
-	private void initialize() {
+	protected void initialize() {
+		super.initialize();
 		titreColumn.setCellValueFactory(cellData -> cellData.getValue().libelleProperty());
 		isbnColumn.setCellValueFactory(cellData -> cellData.getValue().isbnProperty());
 		dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());	
@@ -71,16 +74,16 @@ public class DocumentController extends ControllerImpl<Document> {
 		tagColumn.setCellValueFactory(cellData -> explode(cellData.getValue().tagsProperty().getValue()));	
 		coteColumn.setCellValueFactory(cellData -> explode(cellData.getValue().cotesProperty().getValue()));	
 		supportColumn.setCellValueFactory(cellData -> cellData.getValue().getSupport().libelleProperty());
-		selectSupport.setItems(FXCollections.emptyObservableList());
-		selectLibrary.setItems(FXCollections.emptyObservableList());
+		
 		documentService.findAllSupports().subscribe(
 				data -> selectSupport.setItems(FXCollections.observableArrayList(data)),
-				error -> popError(error.getMessage()),
-				() -> System.out.println("Successfull"));
+				error -> LoggerUtils.log.warning(error.getMessage()),
+				() -> LoggerUtils.log.info("Successfull"));
+		
 		documentService.findAllLibraries().subscribe(
 				data -> selectLibrary.setItems(FXCollections.observableArrayList(data)),
-				error -> popError(error.getMessage()),
-				() -> System.out.println("Successfull"));
+				error -> LoggerUtils.log.warning(error.getMessage()),
+				() -> LoggerUtils.log.info("Successfull"));
 		documentTable.setEditable(true);
 		documentTable.setItems(list);
 		

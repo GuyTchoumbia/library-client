@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
 import application.modele.Auteur;
@@ -12,6 +13,7 @@ import application.modele.Document;
 import application.modele.Editeur;
 import application.modele.Support;
 import application.modele.Tag;
+import application.services.DocumentService;
 import application.utils.AutoCompleteTextField;
 import application.utils.EditableListCell;
 import javafx.beans.binding.Bindings;
@@ -23,8 +25,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.util.converter.NumberStringConverter;
-import services.DocumentService;
 
+@Controller
 public class EditDocumentController extends ControllerImpl<Document>{
 	
 	private Document document;		
@@ -35,17 +37,16 @@ public class EditDocumentController extends ControllerImpl<Document>{
 	 * this controller has a constructor with parameter to pass the data of the object from window to window
 	 */	
 	
-	public EditDocumentController() {
-		super();
-		this.documentService = new DocumentService();
+	public EditDocumentController(DocumentService documentService) {
+		this.documentService = documentService;
 		this.valid = false;
 		this.errorMessage = "";
 	}
 	
-	public EditDocumentController(Document document) {
-		this();
-		this.document = document;
-	}	
+//	public EditDocumentController(Document document) {
+//		this();
+//		this.document = document;
+//	}	
 	
 	@FXML private AutoCompleteTextField<Document> inputTitre;
 	@FXML private AutoCompleteTextField<Document> inputIsbn;
@@ -70,13 +71,16 @@ public class EditDocumentController extends ControllerImpl<Document>{
 	@FXML private Label erreurEditeur;
 	
 	@FXML 
-	private void initialize() {		
+	protected void initialize() {	
+		super.initialize();
 		inputTitre.textProperty().bindBidirectional(document.libelleProperty());
 		Bindings.bindBidirectional(inputDate.textProperty(), document.dateProperty(), new NumberStringConverter());
 		inputIsbn.textProperty().bindBidirectional(document.isbnProperty());
 		inputEditeur.textProperty().bindBidirectional(document.getEditeur().libelleProperty());
 		listAuteurs.itemsProperty().bindBidirectional(document.auteursProperty());
 		listTags.itemsProperty().bindBidirectional(document.tagsProperty());
+		
+		// TODO link checkbox to librairies
 		List<CheckBox> checkboxes = Arrays.asList(premier, deuxieme, troisieme, quatrieme, cinquieme);		
 		for (Cote cote : document.getCotes()) {
 			for (CheckBox checkbox : checkboxes) {
@@ -89,7 +93,9 @@ public class EditDocumentController extends ControllerImpl<Document>{
 		documentService.findAllSupports().subscribe(
 				data -> selectSupport.setItems(FXCollections.observableArrayList(data)),
 				error -> popError(error.getMessage()),
-				() -> System.out.println("Successfull"));		
+				() -> System.out.println("Successfull"));	
+		
+		// TODO add autocomplete to list cells;
 //		inputTitre.textProperty().addListener(
 //				new AutoCompleteTextFieldChangeListener<Document>(inputTitre, documentService.autoCompleteLibelle(inputTitre.getText())));
 //		inputEditeur.textProperty().addListener(
@@ -162,7 +168,7 @@ public class EditDocumentController extends ControllerImpl<Document>{
 		});
 		inputIsbn.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
-				if (!inputEditeur.getText().matches("{14}^.++$")) {
+				if (!inputEditeur.getText().matches("^.++$")) {
 					erreurEditeur.setText("Isbn incorrect");					
 				}
 				else erreurEditeur.setText("");

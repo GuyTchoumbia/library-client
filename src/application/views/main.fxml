@@ -35,7 +35,7 @@
             </Tab>
         </tabs>
       </TabPane>
-      <MenuBar layoutY="2.0" maxWidth="1820.0" prefHeight="25.0" prefWidth="1024.0" GridPane.columnSpan="2147483647" GridPane.valignment="BASELINE">
+      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1024.0" GridPane.columnSpan="2147483647" GridPane.valignment="BASELINE">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
@@ -70,7 +70,7 @@
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints percentHeight="8.33" />
+      <RowConstraints fillHeight="false" maxHeight="25.0" minHeight="25.0" prefHeight="25.0" />
       <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />
       <RowConstraints minHeight="10.0" percentHeight="8.33" prefHeight="30.0" />

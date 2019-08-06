@@ -40,22 +40,22 @@
          </columnResizePolicy>
       </TableView>
       <TextField fx:id="inputIsbn" layoutX="287.0" layoutY="6.0" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="4" GridPane.columnSpan="2" />
-      <Button fx:id="searchButton" layoutX="948.0" layoutY="27.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Chercher" GridPane.columnIndex="14" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <Button fx:id="searchButton" layoutX="948.0" layoutY="27.0" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Chercher" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <Label layoutX="50.0" layoutY="10.0" text="Titre" GridPane.halignment="RIGHT" />
       <Label layoutX="469.0" layoutY="44.0" text="Auteur" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
       <Label layoutX="254.0" layoutY="10.0" text="Isbn" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
       <Label layoutX="706.0" layoutY="44.0" text="Editeur" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-      <Label layoutX="428.0" layoutY="10.0" text="Date" GridPane.columnIndex="9" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <Label layoutX="428.0" layoutY="10.0" text="Date" GridPane.columnIndex="9" GridPane.halignment="RIGHT" />
       <Label layoutX="26.0" layoutY="44.0" text="Tag" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-      <TextField fx:id="inputDate" layoutX="469.0" layoutY="6.0" prefHeight="25.0" prefWidth="70.0" GridPane.columnIndex="10" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <Label layoutX="220.0" layoutY="44.0" text="Bibliotheque" GridPane.columnIndex="12" GridPane.halignment="RIGHT" />
+      <TextField fx:id="inputDate" layoutX="469.0" layoutY="6.0" prefHeight="25.0" prefWidth="70.0" GridPane.columnIndex="10" GridPane.columnSpan="2" />
+      <Label layoutX="220.0" layoutY="44.0" text="Bibliotheque" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
       <TextField fx:id="inputAuteur" editable="true" layoutX="529.0" layoutY="40.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <TextField fx:id="inputEditeur" editable="true" layoutX="770.0" layoutY="40.0" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <TextField fx:id="inputTag" editable="true" layoutX="82.0" layoutY="40.0" prefHeight="25.0" prefWidth="121.0" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <TextField fx:id="inputTitre" editable="true" layoutX="82.0" layoutY="6.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-      <ComboBox fx:id="selectSupport" layoutX="679.0" layoutY="6.0" prefHeight="25.0" prefWidth="269.0" GridPane.columnIndex="10" GridPane.columnSpan="2" />
-      <Label layoutX="614.0" layoutY="10.0" text="Support" GridPane.columnIndex="9" GridPane.halignment="RIGHT" />
-      <ComboBox fx:id="selectLibrary" maxWidth="1.7976931348623157E308" prefWidth="269.0" GridPane.columnIndex="13" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
+      <ComboBox fx:id="selectSupport" layoutX="679.0" layoutY="6.0" prefHeight="25.0" prefWidth="269.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <Label layoutX="614.0" layoutY="10.0" text="Support" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <ComboBox fx:id="selectLibrary" maxWidth="1.7976931348623157E308" prefWidth="269.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
       <Label text="Côte" GridPane.columnIndex="6" GridPane.halignment="RIGHT" />
       <TextField fx:id="inputCote" GridPane.columnIndex="7" GridPane.columnSpan="2" />
    </children>
@@ -63,11 +63,6 @@
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.0" prefWidth="100.0" />
       <ColumnConstraints percentWidth="8.66" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
-      <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
       <ColumnConstraints minWidth="10.0" percentWidth="8.33" prefWidth="100.0" />
