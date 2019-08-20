@@ -3,18 +3,15 @@ package application.views;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
 import application.modele.Auteur;
 import application.modele.Cote;
 import application.modele.Document;
-import application.modele.Editeur;
 import application.modele.Support;
 import application.modele.Tag;
 import application.services.DocumentService;
-import application.utils.AutoCompleteTextField;
 import application.utils.EditableListCell;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -24,6 +21,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.util.converter.NumberStringConverter;
 
 @Controller
@@ -43,17 +41,12 @@ public class EditDocumentController extends ControllerImpl<Document>{
 		this.errorMessage = "";
 	}
 	
-//	public EditDocumentController(Document document) {
-//		this();
-//		this.document = document;
-//	}	
-	
-	@FXML private AutoCompleteTextField<Document> inputTitre;
-	@FXML private AutoCompleteTextField<Document> inputIsbn;
-	@FXML private AutoCompleteTextField<Document> inputDate; 
+	@FXML private TextField inputTitre;
+	@FXML private TextField inputIsbn;
+	@FXML private TextField inputDate; 
 	@FXML private ComboBox<Support> selectSupport;
 	@FXML private ListView<Auteur> listAuteurs;	
-	@FXML private AutoCompleteTextField<Editeur> inputEditeur;
+	@FXML private TextField inputEditeur;
 	@FXML private ListView<Tag> listTags;
 	@FXML private Button addAuteur;
 	@FXML private Button removeAuteur;
@@ -210,16 +203,16 @@ public class EditDocumentController extends ControllerImpl<Document>{
 	
 	public <T> void editSelectedLine(ListView<T> list) {
 		list.edit(list.getSelectionModel().getSelectedIndex());
-	}	
+	}
+	
+	public Document getDocument() {
+		return this.document;
+	}
 
 	public void setDocument(Document document) {
 		this.document = document;	
 	}
 	
-	@Autowired
-	public void setDocumentService(DocumentService documentService) {
-		this.documentService = documentService;
-	}
 	
 	public boolean getValid() { return this.valid; }
 	public void setValid(boolean valid) { this.valid = valid; }

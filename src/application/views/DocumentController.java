@@ -1,21 +1,19 @@
 package application.views;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
-import application.modele.Auteur;
-import application.modele.Cote;
 import application.modele.Document;
-import application.modele.Editeur;
 import application.modele.Library;
 import application.modele.Support;
-import application.modele.Tag;
 import application.services.DocumentService;
 import application.utils.EditDocumentDialog;
 import application.utils.LoggerUtils;
+import application.utils.SpringFxmlLoader;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,15 +25,20 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 
-
 @Controller
 public class DocumentController extends ControllerImpl<Document> {
 	
 	private DocumentService documentService;
+	private SpringFxmlLoader springFxmlLoader;
+	private EditDocumentController editDocumentController;
+	private Document defaultDocument;
 	
-	public DocumentController(DocumentService documentService) {
+	@Lazy
+	public DocumentController(DocumentService documentService, SpringFxmlLoader springFxmlLoader, EditDocumentController editDocumentController) {
 		super();
 		this.documentService = documentService;
+		this.springFxmlLoader = springFxmlLoader;
+		this.editDocumentController = editDocumentController;
 	}
 	
 	@FXML private TableView<Document> documentTable;
@@ -106,20 +109,21 @@ public class DocumentController extends ControllerImpl<Document> {
 		});
 		
 		modifMenu.setOnAction(e -> {
-			EditDocumentDialog dialog = new EditDocumentDialog(documentTable.getSelectionModel().getSelectedItem());
+			EditDocumentDialog dialog = new EditDocumentDialog(documentTable.getSelectionModel().getSelectedItem(), springFxmlLoader, editDocumentController);
 			Optional<Document> result = dialog.showAndWait();
 			result.ifPresent(response -> 
 				documentService.update(response).subscribe(request -> 
 				list.set(documentTable.getSelectionModel().getSelectedIndex(), request)));
 		});
+		
 		ajouterMenu.setOnAction(e -> {
-			EditDocumentDialog dialog = new EditDocumentDialog(
-					new Document(0, "", "", 0, new Editeur(), new Support(), new ArrayList<Auteur>(), new ArrayList<Tag>(), new ArrayList<Cote>()));
+			EditDocumentDialog dialog = new EditDocumentDialog(defaultDocument, springFxmlLoader, editDocumentController);
 			Optional<Document> result = dialog.showAndWait();			
 			result.ifPresent(response -> 
 				documentService.update(response).subscribe(request -> 
 					list.add(request)));						
 		});
+		
 		deleteMenu.setOnAction(e -> {
 			confirmAlert.showAndWait()
 				.filter(response -> response == ButtonType.OK)
@@ -133,6 +137,11 @@ public class DocumentController extends ControllerImpl<Document> {
 //		inputEditeur.textProperty().addListener(new AutoCompleteTextFieldChangeListener<Editeur>(inputEditeur, service, Editeur.class));
 //		inputTheme.textProperty().addListener(new AutoCompleteTextFieldChangeListener<Theme>(inputTheme, service, Theme.class));
 //		inputBibliotheque.textProperty().addListener(new AutoCompleteTextFieldChangeListener<Library>(inputBibliotheque, service, Library.class));
+	}	
+	
+	@Autowired
+	public void setDefaultDocument(Document defaultDocument) {
+		this.defaultDocument = defaultDocument;
 	}
 
 

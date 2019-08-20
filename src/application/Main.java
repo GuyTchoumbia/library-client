@@ -1,8 +1,9 @@
 package application;
 	
-import org.springframework.boot.SpringApplication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Lazy;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +14,18 @@ import javafx.stage.Stage;
 @SpringBootApplication
 public class Main extends Application {
 	
-	private ConfigurableApplicationContext context;
-	private FXMLLoader loader;
+	public static AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+	
+	@Lazy
+	@Autowired
+	private FXMLLoader springFXMLLoader;
 	private GridPane mainContainer;
 	
 	public void init() throws Exception {
-        context = SpringApplication.run(Main.class); 
-        loader = new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("views/main.fxml"));	
-        loader.setControllerFactory(context::getBean);
-        mainContainer = (GridPane) loader.load();
+        FXMLLoader springFXMLLoader = new FXMLLoader();
+		springFXMLLoader.setLocation(this.getClass().getResource("views/main.fxml"));	
+		springFXMLLoader.setControllerFactory(context::getBean);
+        mainContainer = (GridPane) springFXMLLoader.load();
     }
 	
 	@Override

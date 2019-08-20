@@ -3,7 +3,6 @@ package application.utils;
 import application.modele.Document;
 import application.views.EditDocumentController;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,7 +16,9 @@ public class EditDocumentDialog extends Dialog<Document> {
 	
 	private EditDocumentController controller;	
 	
-	public EditDocumentDialog(Document document) {
+	public EditDocumentDialog(Document document, SpringFxmlLoader loader, EditDocumentController controller) {
+		this.controller = controller;
+		this.setDocument(document);
 		this.initStyle(StageStyle.UTILITY);
 		this.setTitle("Editer Document");
 		this.setResizable(true);
@@ -26,20 +27,16 @@ public class EditDocumentDialog extends Dialog<Document> {
 		ButtonType valider = new ButtonType("Valider", ButtonData.OK_DONE);
 		ButtonType annuler = new ButtonType("Annuler", ButtonData.CANCEL_CLOSE);
 		this.getDialogPane().getButtonTypes().addAll(valider, annuler);		
-		try {
-			FXMLLoader loader = new FXMLLoader();		
-			loader.setLocation(getClass().getResource("../views/editDocument.fxml"));
-			this.setController(loader.getController());		
-			this.getController().setDocument(document);
-			GridPane editContainer = (GridPane) loader.load();
-			this.getDialogPane().setContent(editContainer);						
+		try {			
+			GridPane editContainer = (GridPane) loader.load("../views/editDocument.fxml");
+			this.getDialogPane().setContent(editContainer);	
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}				
 		this.setResultConverter(button -> {
 			if (button == valider) {
-				return document;
+				return this.getDocument();
 			}
 			return null;		
 		});
@@ -62,5 +59,13 @@ public class EditDocumentDialog extends Dialog<Document> {
 	
 	public void setController(EditDocumentController controller) {
 		this.controller = controller;
+	}
+	
+	public Document getDocument() {
+		return this.controller.getDocument();
+	}
+	
+	public void setDocument(Document document) {
+		this.controller.setDocument(document);
 	}
 }

@@ -1,20 +1,18 @@
 package application.views;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
-import application.modele.Adress;
-import application.modele.Civil;
-import application.modele.Contact;
 import application.modele.User;
-import application.modele.UserCote;
 import application.services.UserService;
 import application.utils.EditUserDialog;
 import application.utils.LoggerUtils;
+import application.utils.SpringFxmlLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -27,10 +25,16 @@ import javafx.scene.control.TextField;
 @Controller
 public class UserController extends ControllerImpl<User>{
 	
-	UserService userService;
+	private UserService userService;		
+	private SpringFxmlLoader loader;
+	private EditUserController editUserController;
+	private User defaultUser;
 	
-	public UserController(UserService userService) {
-		this.userService = userService;
+	@Lazy
+	public UserController(UserService userService, SpringFxmlLoader loader, EditUserController editUserController) {
+		this.userService = userService;		
+		this.loader = loader;
+		this.editUserController = editUserController;
 	}
 	
 	@FXML TextField inputId;
@@ -102,7 +106,7 @@ public class UserController extends ControllerImpl<User>{
 			});
 		});
 		editMenu.setOnAction(e -> {
-			EditUserDialog dialog = new EditUserDialog(userTable.getSelectionModel().getSelectedItem());			
+			EditUserDialog dialog = new EditUserDialog(userTable.getSelectionModel().getSelectedItem(), loader, editUserController);			
 			Optional<User> result = dialog.showAndWait();
 			result.ifPresent(response -> {
 				userService
@@ -142,15 +146,15 @@ public class UserController extends ControllerImpl<User>{
 		
 	}
 	
-	private Optional<User> getNewUserDialog() {
-		User user = new User();
-		user.setCivil(new Civil());
-		user.setContact(new Contact());
-		user.getContact().setAdress(new Adress());
-		user.setUserCotes(new ArrayList<UserCote>());					 
-		EditUserDialog dialog = new EditUserDialog(user);
+	private Optional<User> getNewUserDialog() {		
+		EditUserDialog dialog = new EditUserDialog(defaultUser, loader, editUserController);
 		Optional<User> result = dialog.showAndWait();
 		return result;
+	}		
+	
+	@Autowired
+	public void setDefaultUser(User defaultUser) {
+		this.defaultUser = defaultUser;
 	}
 
 }

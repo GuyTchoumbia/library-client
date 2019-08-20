@@ -1,7 +1,6 @@
 package application.views;
 
-import java.time.LocalDate;
-
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import application.common.ControllerImpl;
@@ -12,6 +11,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
+@Lazy
 @Controller
 public class EditUserController extends ControllerImpl<User>{
 	
@@ -60,9 +60,9 @@ public class EditUserController extends ControllerImpl<User>{
 		inputVille.textProperty().bindBidirectional(user.getContact().getAdress().villeProperty());
 		inputEmail.textProperty().bindBidirectional(user.getContact().emailProperty());
 		inputTelephone.textProperty().bindBidirectional(user.getContact().phoneProperty());	
-		inputDate.valueProperty().bindBidirectional(new SimpleObjectProperty<LocalDate>(user.getCivil().getDateNaissance().toLocalDate()));
-		//validation front
+//		inputDate.valueProperty().bindBidirectional(new SimpleObjectProperty<LocalDate>(user.getCivil().getDateNaissance().toLocalDate()));
 		
+		// validation front		
 		inputNom.focusedProperty().addListener((obs, oldValue, newValue) -> {
 			if (!newValue) {
 				if (inputNom.getText().equals("") || !inputNom.getText().matches("^.++$")) {

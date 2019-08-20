@@ -3,7 +3,6 @@ package application.utils;
 import application.modele.User;
 import application.views.EditUserController;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -17,7 +16,9 @@ public class EditUserDialog extends Dialog<User> {
 	
 	private EditUserController controller;
 	
-	public EditUserDialog(User user) {
+	public EditUserDialog(User user, SpringFxmlLoader loader, EditUserController controller) {
+		this.controller = controller;
+		this.setUser(user);
 		this.initStyle(StageStyle.UTILITY);
 		this.setTitle("Editer Utilisateur");
 		this.setResizable(true);
@@ -25,14 +26,10 @@ public class EditUserDialog extends Dialog<User> {
 		this.setWidth(1200);
 		ButtonType valider = new ButtonType("Valider", ButtonData.OK_DONE);
 		ButtonType annuler = new ButtonType("Annuler", ButtonData.CANCEL_CLOSE);
-		getDialogPane().getButtonTypes().addAll(valider, annuler);		
-		try {
-			FXMLLoader loader = new FXMLLoader();		
-			loader.setLocation(getClass().getResource("../views/editUser.fxml"));
-			this.setController(loader.getController());
-			this.getController().setUser(user);
-			GridPane editContainer = (GridPane) loader.load();
-			this.getDialogPane().setContent(editContainer);						
+		getDialogPane().getButtonTypes().addAll(valider, annuler);	
+		try {			
+			GridPane editContainer = (GridPane) loader.load("../views/editUser.fxml");
+			this.getDialogPane().setContent(editContainer);				
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -50,9 +47,9 @@ public class EditUserDialog extends Dialog<User> {
 				
 		this.setResultConverter(button -> {
 			if (button == valider) {				
-				return user;
+				return this.getUser();				
 			}
-			else return null;		
+			else return null;
 		});		
 	}	
 	
@@ -63,5 +60,13 @@ public class EditUserDialog extends Dialog<User> {
 	public void setController(EditUserController controller) {
 		this.controller = controller;
 	}
+	
+	public User getUser() {
+		return this.controller.getUser();
+	}
+	
+	public void setUser(User user) {
+		this.controller.setUser(user);
+	}	
 
 }
